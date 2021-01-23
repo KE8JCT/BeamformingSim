@@ -1,0 +1,11 @@
+fs = 8000;
+t = (0:1/fs:1).';
+time = length(t);
+[x1, time2] = ADSB(time)
+x1 = x1(1:length(t));
+x2 = cos(2*pi*t*400);
+antenna = phased.IsotropicAntennaElement('FrequencyRange',[100e6 300e6]);
+array = phased.ULA('Element',antenna,'NumElements',10,'ElementSpacing',1);
+fc = 150e6;
+x = collectPlaneWave(array,[x1 x2],[10 20;60 -5]',fc);
+noise = 0.1*(randn(size(x)) + 1i*randn(size(x)));
